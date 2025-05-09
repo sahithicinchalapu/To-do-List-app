@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>To Do List</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .todo-container {
+      width: 100%;
+      max-width: 500px;
+    }
+
+    .header {
+      background-color: rgba(255, 255, 255, 0.9);
+      padding: 30px 40px;
+      border-radius: 15px 15px 0 0;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+      text-align: center;
+      color: #4a4a4a;
+      font-weight: 700;
+      font-size: 2rem;
+      letter-spacing: 1.5px;
+    }
+
+    #myInput {
+      padding: 15px 20px;
+      width: 70%;
+      border: none;
+      border-radius: 50px;
+      margin-right: 15px;
+      font-size: 1.1rem;
+      box-shadow: 0 4px 10px rgba(102, 126, 234, 0.3);
+      transition: box-shadow 0.3s ease;
+    }
+
+    #myInput:focus {
+      outline: none;
+      box-shadow: 0 0 10px 3px #764ba2;
+    }
+
+    .addBtn {
+      padding: 15px 30px;
+      background: #764ba2;
+      color: white;
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      font-size: 1.1rem;
+      font-weight: 600;
+      box-shadow: 0 4px 15px rgba(118, 75, 162, 0.6);
+      transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .addBtn:hover {
+      background-color: #5a357a;
+      box-shadow: 0 6px 20px rgba(90, 53, 122, 0.8);
+    }
+
+    .task-counter {
+      background: rgba(255,255,255,0.95);
+      color: #764ba2;
+      font-size: 1.1rem;
+      padding: 10px 40px;
+      border-radius: 0 0 0 0;
+      margin-bottom: 0;
+      text-align: left;
+      font-weight: 500;
+      box-shadow: 0 2px 6px rgba(118, 75, 162, 0.10);
+    }
+
+    #myUL {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      background: rgba(255, 255, 255, 0.9);
+      border-radius: 0 0 15px 15px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+      max-width: 500px;
+      width: 100%;
+      overflow: hidden;
+    }
+
+    #myUL li {
+      padding: 15px 20px;
+      border-bottom: 1px solid #ddd;
+      font-size: 1.2rem;
+      color: #4a4a4a;
+      position: relative;
+      transition: background-color 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    #myUL li:last-child {
+      border-bottom: none;
+    }
+
+    #myUL li.checked span.task-text {
+      text-decoration: line-through;
+      color: #a29bfe;
+      background-color: #e0d9ff;
+    }
+
+    .button-group {
+      display: flex;
+      gap: 10px;
+    }
+
+    .completeBtn {
+      padding: 7px 18px;
+      background: #28a745;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: background 0.2s;
+    }
+
+    .completeBtn:hover {
+      background: #218838;
+    }
+
+    .deleteBtn {
+      padding: 7px 18px;
+      background: #e74c3c;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: background 0.2s;
+    }
+
+    .deleteBtn:hover {
+      background: #c0392b;
+    }
+
+    .edit-input {
+      font-size: 1.2rem;
+      padding: 10px 15px;
+      width: 65%;
+      border: 2px solid #764ba2;
+      border-radius: 10px;
+      outline: none;
+      transition: border-color 0.3s ease;
+    }
+    .edit-input:focus {
+      border-color: #5a357a;
+    }
+  </style>
+</head>
+<body>
+  <div class="todo-container">
+    <div id="myDIV" class="header">
+      <h2>My To Do List</h2>
+      <input type="text" id="myInput" placeholder="Title...">
+      <span onclick="newElement()" class="addBtn">Add</span>
+    </div>
+    <div class="task-counter">
+      Tasks: <span id="taskCount">0</span>
+    </div>
+    <ul id="myUL"></ul>
+  </div>
+  <script>
+    function updateTaskCount() {
+      const count = document.querySelectorAll('#myUL li').length;
+      document.getElementById('taskCount').textContent = count;
+    }
+
+    function newElement() {
+      const inputValue = document.getElementById("myInput").value.trim();
+      if (inputValue === "") {
+        alert("You must write something!");
+        return;
+      }
+      createTaskElement(inputValue);
+      document.getElementById("myInput").value = "";
+      updateTaskCount();
+    }
+
+    function createTaskElement(taskText) {
+      const li = document.createElement("li");
+
+      // Task text span
+      const textSpan = document.createElement("span");
+      textSpan.textContent = taskText;
+      textSpan.className = "task-text";
+      textSpan.style.flex = "1";
+      li.appendChild(textSpan);
+
+      // Double-click to edit
+      textSpan.addEventListener("dblclick", function(e) {
+        if (li.classList.contains("checked") || li.classList.contains("editing")) return;
+        startEditTask(li, textSpan);
+      });
+
+      // Button group
+      const btnGroup = document.createElement("div");
+      btnGroup.className = "button-group";
+
+      // Complete button
+      const completeBtn = document.createElement("button");
+      completeBtn.textContent = "Completed";
+      completeBtn.className = "completeBtn";
+      completeBtn.onclick = function() {
+        li.classList.toggle("checked");
+      };
+      btnGroup.appendChild(completeBtn);
+
+      // Delete button
+      const delBtn = document.createElement("button");
+      delBtn.textContent = "Delete";
+      delBtn.className = "deleteBtn";
+      delBtn.onclick = function() {
+        li.remove();
+        updateTaskCount();
+      };
+      btnGroup.appendChild(delBtn);
+
+      li.appendChild(btnGroup);
+
+      document.getElementById("myUL").appendChild(li);
+    }
+
+    function startEditTask(li, textSpan) {
+      li.classList.add("editing");
+      const currentText = textSpan.textContent;
+      const input = document.createElement("input");
+      input.type = "text";
+      input.value = currentText;
+      input.className = "edit-input";
+
+      li.insertBefore(input, textSpan);
+      li.removeChild(textSpan);
+
+      input.focus();
+
+      input.addEventListener("keydown", function(e) {
+        if (e.key === "Enter") {
+          finishEditTask(li, input, textSpan);
+        }
+        if (e.key === "Escape") {
+          finishEditTask(li, input, textSpan, true); // cancel edit
+        }
+      });
+      input.addEventListener("blur", function() {
+        finishEditTask(li, input, textSpan);
+      });
+    }
+
+    function finishEditTask(li, input, oldSpan, cancel = false) {
+      const newText = cancel ? oldSpan.textContent : input.value.trim() || oldSpan.textContent;
+      const newSpan = document.createElement("span");
+      newSpan.textContent = newText;
+      newSpan.className = "task-text";
+      newSpan.style.flex = "1";
+
+      // Re-add event listeners
+      newSpan.addEventListener("dblclick", function(e) {
+        if (li.classList.contains("checked") || li.classList.contains("editing")) return;
+        startEditTask(li, newSpan);
+      });
+
+      li.insertBefore(newSpan, input);
+      li.removeChild(input);
+      li.classList.remove("editing");
+    }
+
+    // Add tasks by pressing Enter in the input box
+    document.getElementById("myInput").addEventListener("keydown", function(e) {
+      if (e.key === "Enter") {
+        newElement();
+      }
+    });
+  </script>
+</body>
+</html>
