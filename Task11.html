@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    body {
+  background: linear-gradient(120deg, #228B22 0%, #87CEEB 100%);
+  
+   }
+
+
+    header {
+      text-align: center;
+      color: #1f392c;
+      font-family: 'Arial', sans-serif;
+      font-size: 2.5em;
+      margin-top: 20%;
+    }
+    p{
+      color: #1f392c;
+      font-family: 'Arial', sans-serif;
+      font-size: 1.5em;
+      display:inline-block;
+      margin: 0 20px;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+    }
+    input[type="number"] {
+      width: 75px;
+      padding: 10px;
+      font-size: 1.2em;
+      border: 2px solid #1f392c;
+      border-radius: 15px;
+      justify-content: center;
+      align-items: center;
+    }
+    #generate{
+      background-color: #1f392c;
+      color: white;
+      padding: 10px 20px;
+      font-size: 1.2em;
+      border: none;
+      border-radius: 15px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #2E865F;
+    }
+    button:active {
+      background-color: #F7DC6F;
+    }
+    #result {
+      color: #0f191b;
+      font-family: 'Arial', sans-serif;
+      font-size: 1.5em;
+      margin-top: 20px;
+      text-align: center;
+    }
+    #result span {
+      color: #243f32;
+      font-weight: bold;
+    }
+    #container {
+      text-align: top;
+      margin-top: 10%;
+      background:transparent;
+      padding: 20px;
+      border-radius: 15px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    }
+    @media (max-width: 600px) {
+      header {
+        font-size: 2em;
+      }
+      p {
+        font-size: 1.2em;
+      }
+      input[type="number"] {
+        width: 60px;
+        font-size: 1em;
+      }
+      #generate {
+        font-size: 1em;
+      }
+      #result {
+        font-size: 1.2em;
+      }
+    }
+    #container{
+      padding-top:25%;
+      width:75%;
+      margin:25% auto;
+
+    }
+    h1{
+      padding-top:0px;
+      margin-top: 0%;
+      align-items: center;
+      justify-content: center;
+    } 
+    #container {
+      background-color: #abf7b9;
+      min-height: fit-content;
+      padding: 20px;
+      border-radius: 15px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+      align-items: center;
+      justify-content: center;
+      width:50%;
+      align-items: center;
+    }
+  </style>
+  
+</head>
+<body>
+ 
+  <div id="container">
+    <h1>Prime Number Generator</h1>
+    <p>Start:</p>
+    <input type="number" id="start" ><br><br>
+    <p>End:</p>
+    <input type="number" id="end"><br><br>
+    <button id="generate">Generate</button><br><br>
+    <p id="result"></p>
+  </div>
+  <script>
+    function isPrime(num) {
+      if (num <= 1) return false;
+      for (let i = 2; i <= Math.sqrt(num); i++) {
+        if (num % i === 0) return false;
+      }
+      return true;
+    }
+
+    function generatePrimes() {
+      const start = parseInt(document.getElementById('start').value);
+      const end = parseInt(document.getElementById('end').value);
+      let primes = [];
+
+      for (let i = start; i <= end; i++) {
+        if (isPrime(i)) {
+          primes.push(i);
+        }
+      }
+
+      document.getElementById('result').innerHTML = `Prime numbers between ${start} and ${end}: <span>${primes.join(', ')}</span>`;
+    }
+
+    document.getElementById('generate').addEventListener('click', generatePrimes);
+  </script>
+</body>
+</html>
